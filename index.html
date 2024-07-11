@@ -3,28 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Average Loudness</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Average Loudness</title>
 </head>
 <body>
     <div class="container">
         <h1>Average Loudness</h1>
-        <div class="loudness-display">
-            <div>Current Loudness: <span id="current-loudness">0</span> dB</div>
-            <div>Average Loudness: <span id="average-loudness">0</span> dB</div>
-        </div>
-        <div>
-            <label for="interval">Select Interval:</label>
-            <select id="interval">
-                <option value="10">10 seconds</option>
-                <option value="20">20 seconds</option>
-                <option value="30">30 seconds</option>
-            </select>
-        </div>
         <canvas id="loudness-graph"></canvas>
+        <div class="loudness-display">
+            <div id="current-loudness-container">
+                <h2 id="current-loudness">0.0</h2>
+                <p>Current</p>
+            </div>
+            <div id="average-loudness-container">
+                <h2 id="average-loudness">0.0</h2>
+                <p>Average</p>
+            </div>
+        </div>
+        <select id="interval">
+            <option value="10">10 seconds</option>
+            <option value="30">30 seconds</option>
+            <option value="60">1 minute</option>
+        </select>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
