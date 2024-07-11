@@ -1,5 +1,5 @@
 {
-    "name": "Loudness PWA",
+    "name": "Average Loudness",
     "short_name": "Loudness",
     "start_url": ".",
     "display": "standalone",
