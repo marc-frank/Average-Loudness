@@ -1,14 +1,19 @@
 {
-    "name": "Average Loudness",
+    "name": "Loudness PWA",
     "short_name": "Loudness",
-    "start_url": ".",
+    "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#ffffff",
-    "theme_color": "#333333",
+    "description": "A PWA to measure loudness using the device microphone",
     "icons": [
         {
-            "src": "icon.png",
+            "src": "icons/icon-192x192.png",
             "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-512x512.png",
+            "sizes": "512x512",
             "type": "image/png"
         }
     ]
