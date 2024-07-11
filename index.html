@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loudness PWA</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Loudness PWA</h1>
+        <div class="loudness-display">
+            <div>Current Loudness: <span id="current-loudness">0</span> dB</div>
+            <div>Average Loudness: <span id="average-loudness">0</span> dB</div>
+        </div>
+        <div>
+            <label for="interval">Select Interval:</label>
+            <select id="interval">
+                <option value="10">10 seconds</option>
+                <option value="20">20 seconds</option>
+                <option value="30">30 seconds</option>
+            </select>
+        </div>
+        <canvas id="loudness-graph"></canvas>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
