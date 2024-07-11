@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.loudness-display div {
+    margin: 20px;
+}
+
+#loudness-graph {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 600px;
+    height: 300px;
+}
