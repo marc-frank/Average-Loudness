@@ -4,7 +4,7 @@ const averageLoudnessDisplay = document.getElementById('average-loudness');
 const intervalSelect = document.getElementById('interval');
 const canvas = document.getElementById('loudness-graph');
 
-// Set up CanvasJS for the graph
+// Set up Chart.js for the graph
 const ctx = canvas.getContext('2d');
 let chart;
 
@@ -14,7 +14,7 @@ let dataArray;
 let bufferLength;
 
 let loudnessHistory = [];
-let interval = 10;
+let interval = 10; // default interval in seconds
 
 // Function to get microphone input
 async function getMicrophoneInput() {
@@ -44,7 +44,7 @@ function updateLoudness() {
     let loudness = 20 * Math.log10(average);
 
     if (!isFinite(loudness)) {
-        loudness = 0; // Handle -Infinity or NaN
+        loudness = -100; // Handle -Infinity or NaN by setting a minimum value
     }
 
     currentLoudnessDisplay.textContent = loudness.toFixed(2);
@@ -76,7 +76,7 @@ function updateGraph() {
             },
             {
                 label: 'Average Loudness',
-                data: new Array(loudnessHistory.length).fill(averageLoudnessDisplay.textContent),
+                data: new Array(loudnessHistory.length).fill(parseFloat(averageLoudnessDisplay.textContent)),
                 borderColor: 'rgba(153, 102, 255, 1)',
                 borderWidth: 2,
                 fill: false,
@@ -98,8 +98,7 @@ function updateGraph() {
                         display: true
                     },
                     y: {
-                        display: true,
-                        beginAtZero: true // Start y-axis at zero
+                        display: true
                     }
                 }
             }
