@@ -63,6 +63,10 @@ function updateLoudness() {
 
 // Function to update the graph
 function updateGraph() {
+    const allValues = [...loudnessHistory, ...new Array(loudnessHistory.length).fill(parseFloat(averageLoudnessDisplay.textContent))];
+    const minValue = Math.min(...allValues);
+    const maxValue = Math.max(...allValues);
+
     const data = {
         labels: loudnessHistory.map((_, i) => i),
         datasets: [
@@ -87,6 +91,10 @@ function updateGraph() {
 
     if (chart) {
         chart.data = data;
+        chart.options.scales.y = {
+            min: minValue,
+            max: maxValue
+        };
         chart.update();
     } else {
         chart = new Chart(ctx, {
@@ -98,7 +106,9 @@ function updateGraph() {
                         display: true
                     },
                     y: {
-                        display: true
+                        display: true,
+                        min: minValue,
+                        max: maxValue
                     }
                 }
             }
