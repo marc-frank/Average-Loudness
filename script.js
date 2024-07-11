@@ -41,7 +41,11 @@ function updateLoudness() {
         values += dataArray[i];
     }
     const average = values / bufferLength;
-    const loudness = 20 * Math.log10(average);
+    let loudness = 20 * Math.log10(average);
+
+    if (!isFinite(loudness)) {
+        loudness = 0; // Handle -Infinity or NaN
+    }
 
     currentLoudnessDisplay.textContent = loudness.toFixed(2);
 
@@ -66,15 +70,17 @@ function updateGraph() {
                 label: 'Current Loudness',
                 data: loudnessHistory,
                 borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
-                fill: false
+                borderWidth: 2,
+                fill: false,
+                lineTension: 0 // Solid line
             },
             {
                 label: 'Average Loudness',
                 data: new Array(loudnessHistory.length).fill(averageLoudnessDisplay.textContent),
                 borderColor: 'rgba(153, 102, 255, 1)',
-                borderWidth: 1,
-                fill: false
+                borderWidth: 2,
+                fill: false,
+                lineTension: 0 // Solid line
             }
         ]
     };
@@ -92,7 +98,8 @@ function updateGraph() {
                         display: true
                     },
                     y: {
-                        display: true
+                        display: true,
+                        beginAtZero: true // Start y-axis at zero
                     }
                 }
             }
