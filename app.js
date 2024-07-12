@@ -18,26 +18,28 @@ async function initAudio() {
         analyser = audioContext.createAnalyser();
         const source = audioContext.createMediaStreamSource(stream);
         source.connect(analyser);
-        analyser.fftSize = 256;
+        analyser.fftSize = 2048; // Increased for better frequency resolution
         const bufferLength = analyser.frequencyBinCount;
-        dataArray = new Uint8Array(bufferLength);
+        dataArray = new Float32Array(bufferLength);
     } catch (err) {
         console.error('Error accessing microphone:', err);
     }
 }
 
-function getLoudness() {
-    analyser.getByteFrequencyData(dataArray);
-    const sum = dataArray.reduce((acc, val) => acc + val, 0);
-    return sum / dataArray.length;
+function getLoudnessInDecibels() {
+    analyser.getFloatFrequencyData(dataArray);
+    const sum = dataArray.reduce((acc, val) => acc + Math.pow(10, val / 10), 0);
+    const rms = Math.sqrt(sum / dataArray.length);
+    return 20 * Math.log10(rms) + 100; // Adding 100 to shift the range to positive values
 }
 
 function updateLoudness() {
-    currentLoudness = getLoudness();
-    loudnessHistory.push({ time: Date.now(), value: currentLoudness });
+    currentLoudness = getLoudnessInDecibels();
+    const now = Date.now();
+    loudnessHistory.push({ time: now, value: currentLoudness });
 
     // Remove old data points
-    const cutoffTime = Date.now() - averageInterval * 1000;
+    const cutoffTime = now - averageInterval * 1000;
     loudnessHistory = loudnessHistory.filter(point => point.time >= cutoffTime);
 
     // Calculate average
@@ -53,12 +55,16 @@ function updateLoudness() {
 }
 
 function updateChart() {
-    loudnessChart.data.datasets[0].data.push(currentLoudness);
-    loudnessChart.data.datasets[1].data.push(averageLoudness);
-    if (loudnessChart.data.datasets[0].data.length > 50) {
-        loudnessChart.data.datasets[0].data.shift();
-        loudnessChart.data.datasets[1].data.shift();
-    }
+    const now = Date.now();
+    const labels = loudnessHistory.map(point => (point.time - now) / 1000);
+    
+    loudnessChart.data.labels = labels;
+    loudnessChart.data.datasets[0].data = loudnessHistory.map(point => point.value);
+    loudnessChart.data.datasets[1].data = Array(loudnessHistory.length).fill(averageLoudness);
+
+    loudnessChart.options.scales.x.min = -averageInterval;
+    loudnessChart.options.scales.x.max = 0;
+
     loudnessChart.update();
 }
 
@@ -67,7 +73,7 @@ function initChart() {
     loudnessChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: Array(50).fill(''),
+            labels: [],
             datasets: [{
                 label: 'Current',
                 data: [],
@@ -83,9 +89,20 @@ function initChart() {
         options: {
             responsive: true,
             scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                    title: {
+                        display: true,
+                        text: 'Seconds ago'
+                    }
+                },
                 y: {
-                    beginAtZero: true,
-                    max: 255
+                    beginAtZero: false,
+                    title: {
+                        display: true,
+                        text: 'Loudness (dB)'
+                    }
                 }
             },
             animation: {
