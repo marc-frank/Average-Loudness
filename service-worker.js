@@ -1,18 +1,16 @@
-const cacheName = 'loudness-pwa-v1';
-const assetsToCache = [
-    './',
-    './index.html',
-    './styles.css',
-    './script.js',
-    './manifest.json',
-    './icons/icon-192x192.png',
-    './icons/icon-512x512.png'
+const CACHE_NAME = 'loudness-meter-v1';
+const urlsToCache = [
+    '/',
+    '/index.html',
+    '/styles.css',
+    '/app.js',
+    '/icon.png'
 ];
 
 self.addEventListener('install', event => {
     event.waitUntil(
-        caches.open(cacheName)
-            .then(cache => cache.addAll(assetsToCache))
+        caches.open(CACHE_NAME)
+            .then(cache => cache.addAll(urlsToCache))
     );
 });
 
