@@ -7,12 +7,10 @@ const canvas = document.getElementById('loudness-graph');
 // Set up Chart.js for the graph
 const ctx = canvas.getContext('2d');
 let chart;
-
 let audioContext;
 let analyser;
 let dataArray;
 let bufferLength;
-
 let loudnessHistory = [];
 let interval = 10; // default interval in seconds
 
@@ -42,74 +40,64 @@ function updateLoudness() {
     }
     const average = values / bufferLength;
     let loudness = 20 * Math.log10(average);
-
     if (!isFinite(loudness)) {
         loudness = -100; // Handle -Infinity or NaN by setting a minimum value
     }
-
-    currentLoudnessDisplay.textContent = loudness.toFixed(2);
-
+    currentLoudnessDisplay.textContent = loudness.toFixed(1);
     loudnessHistory.push(loudness);
     if (loudnessHistory.length > interval * 10) {
         loudnessHistory.shift();
     }
-
     const avgLoudness = loudnessHistory.reduce((a, b) => a + b, 0) / loudnessHistory.length;
-    averageLoudnessDisplay.textContent = avgLoudness.toFixed(2);
-
+    averageLoudnessDisplay.textContent = avgLoudness.toFixed(1);
     updateGraph();
     requestAnimationFrame(updateLoudness);
 }
 
 // Function to update the graph
 function updateGraph() {
-    const allValues = [...loudnessHistory, parseFloat(averageLoudnessDisplay.textContent)];
-    const minValue = Math.min(...allValues) - 10; // Adding padding to the min value
-    const maxValue = Math.max(...allValues) + 10; // Adding padding to the max value
-
     const data = {
-        labels: loudnessHistory.map((_, i) => i),
+        labels: new Array(loudnessHistory.length).fill(''),
         datasets: [
             {
                 label: 'Current Loudness',
                 data: loudnessHistory,
-                borderColor: 'rgba(75, 192, 192, 1)',
+                borderColor: 'blue',
                 borderWidth: 2,
                 fill: false,
-                lineTension: 0 // Solid line
+                lineTension: 0
             },
             {
                 label: 'Average Loudness',
                 data: new Array(loudnessHistory.length).fill(parseFloat(averageLoudnessDisplay.textContent)),
-                borderColor: 'rgba(153, 102, 255, 1)',
+                borderColor: 'green',
                 borderWidth: 2,
                 fill: false,
-                lineTension: 0 // Solid line
+                lineTension: 0
             }
         ]
     };
 
     if (chart) {
         chart.data = data;
-        chart.options.scales.y = {
-            min: minValue,
-            max: maxValue
-        };
         chart.update();
     } else {
         chart = new Chart(ctx, {
             type: 'line',
             data: data,
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 scales: {
-                    x: {
-                        display: true
-                    },
+                    x: { display: false },
                     y: {
-                        display: true,
-                        min: minValue,
-                        max: maxValue
+                        display: false,
+                        min: 0,
+                        max: 100
                     }
+                },
+                plugins: {
+                    legend: { display: false }
                 }
             }
         });
@@ -128,7 +116,7 @@ getMicrophoneInput();
 // Register service worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
+        navigator.serviceWorker.register('./service-worker.js')
             .then(registration => {
                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
             })
