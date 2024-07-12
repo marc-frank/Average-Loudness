@@ -4,11 +4,12 @@ let dataArray;
 let loudnessChart;
 let currentLoudness = 0;
 let averageLoudness = 0;
-let totalLoudness = 0;
-let sampleCount = 0;
+let loudnessHistory = [];
+let averageInterval = 10; // Default to 10 seconds
 
 const currentLoudnessElement = document.getElementById('current-loudness');
 const averageLoudnessElement = document.getElementById('average-loudness');
+const averageIntervalSelect = document.getElementById('averageInterval');
 
 async function initAudio() {
     try {
@@ -33,13 +34,25 @@ function getLoudness() {
 
 function updateLoudness() {
     currentLoudness = getLoudness();
-    totalLoudness += currentLoudness;
-    sampleCount++;
-    averageLoudness = totalLoudness / sampleCount;
+    loudnessHistory.push({ time: Date.now(), value: currentLoudness });
+
+    // Remove old data points
+    const cutoffTime = Date.now() - averageInterval * 1000;
+    loudnessHistory = loudnessHistory.filter(point => point.time >= cutoffTime);
+
+    // Calculate average
+    const sum = loudnessHistory.reduce((acc, point) => acc + point.value, 0);
+    averageLoudness = sum / loudnessHistory.length;
 
     currentLoudnessElement.textContent = currentLoudness.toFixed(1);
     averageLoudnessElement.textContent = averageLoudness.toFixed(1);
 
+    updateChart();
+
+    requestAnimationFrame(updateLoudness);
+}
+
+function updateChart() {
     loudnessChart.data.datasets[0].data.push(currentLoudness);
     loudnessChart.data.datasets[1].data.push(averageLoudness);
     if (loudnessChart.data.datasets[0].data.length > 50) {
@@ -47,8 +60,6 @@ function updateLoudness() {
         loudnessChart.data.datasets[1].data.shift();
     }
     loudnessChart.update();
-
-    requestAnimationFrame(updateLoudness);
 }
 
 function initChart() {
@@ -84,10 +95,16 @@ function initChart() {
     });
 }
 
+function handleIntervalChange() {
+    averageInterval = parseInt(averageIntervalSelect.value);
+    loudnessHistory = []; // Reset history when interval changes
+}
+
 async function init() {
     await initAudio();
     initChart();
     updateLoudness();
+    averageIntervalSelect.addEventListener('change', handleIntervalChange);
 }
 
 init();
