@@ -65,8 +65,8 @@ function updateChart() {
     const labels = loudnessHistory.map(point => (point.time - now) / 1000);
     
     loudnessChart.data.labels = labels;
-    loudnessChart.data.datasets[1].data = loudnessHistory.map(point => point.average);
     loudnessChart.data.datasets[0].data = loudnessHistory.map(point => point.value);
+    loudnessChart.data.datasets[1].data = loudnessHistory.map(point => point.average);
 
     loudnessChart.options.scales.x.min = -averageInterval;
     loudnessChart.options.scales.x.max = 0;
@@ -81,15 +81,15 @@ function initChart() {
         data: {
             labels: [],
             datasets: [{
-                label: 'Current',
-                data: [],
-                borderColor: 'blue',
-                fill: false
-            }, {
                 label: 'Average',
                 data: [],
                 borderColor: 'green',
-                fill: false
+                fill: true
+            }, {
+                label: 'Current',
+                data: [],
+                borderColor: 'blue',
+                fill: true
             }]
         },
         options: {
