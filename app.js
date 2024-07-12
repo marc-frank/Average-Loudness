@@ -3,7 +3,6 @@ let analyser;
 let dataArray;
 let loudnessChart;
 let currentLoudness = 0;
-let averageLoudness = 0;
 let loudnessHistory = [];
 let averageInterval = 10; // Default to 10 seconds
 
@@ -18,7 +17,7 @@ async function initAudio() {
         analyser = audioContext.createAnalyser();
         const source = audioContext.createMediaStreamSource(stream);
         source.connect(analyser);
-        analyser.fftSize = 2048; // Increased for better frequency resolution
+        analyser.fftSize = 2048;
         const bufferLength = analyser.frequencyBinCount;
         dataArray = new Float32Array(bufferLength);
     } catch (err) {
@@ -36,18 +35,25 @@ function getLoudnessInDecibels() {
 function updateLoudness() {
     currentLoudness = getLoudnessInDecibels();
     const now = Date.now();
+    
+    // Add new data point
     loudnessHistory.push({ time: now, value: currentLoudness });
 
     // Remove old data points
     const cutoffTime = now - averageInterval * 1000;
     loudnessHistory = loudnessHistory.filter(point => point.time >= cutoffTime);
 
-    // Calculate average
-    const sum = loudnessHistory.reduce((acc, point) => acc + point.value, 0);
-    averageLoudness = sum / loudnessHistory.length;
+    // Calculate running average
+    let runningSum = 0;
+    for (let i = 0; i < loudnessHistory.length; i++) {
+        runningSum += loudnessHistory[i].value;
+        loudnessHistory[i].average = runningSum / (i + 1);
+    }
+
+    const currentAverage = loudnessHistory[loudnessHistory.length - 1].average;
 
     currentLoudnessElement.textContent = currentLoudness.toFixed(1);
-    averageLoudnessElement.textContent = averageLoudness.toFixed(1);
+    averageLoudnessElement.textContent = currentAverage.toFixed(1);
 
     updateChart();
 
@@ -60,7 +66,7 @@ function updateChart() {
     
     loudnessChart.data.labels = labels;
     loudnessChart.data.datasets[0].data = loudnessHistory.map(point => point.value);
-    loudnessChart.data.datasets[1].data = Array(loudnessHistory.length).fill(averageLoudness);
+    loudnessChart.data.datasets[1].data = loudnessHistory.map(point => point.average);
 
     loudnessChart.options.scales.x.min = -averageInterval;
     loudnessChart.options.scales.x.max = 0;
