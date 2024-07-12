@@ -84,7 +84,6 @@ function initChart() {
                 label: 'Current',
                 data: [],
                 borderColor: 'blue',
-                backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
                 fill: false,
                 tension: 0.25,
                 radius: 0
@@ -92,7 +91,6 @@ function initChart() {
                 label: 'Average',
                 data: [],
                 borderColor: 'green',
-                backgroundColor: Utils.transparentize(Utils.CHART_COLORS.green, 0.5),
                 fill: false,
                 tension: 0.25,
                 radius: 0
