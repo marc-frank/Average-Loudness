@@ -10,6 +10,15 @@
 <body>
     <div class="container">
         <h1>Average Loudness</h1>
+        <div class="interval-select">
+            <label for="averageInterval">Average Interval:</label>
+            <select id="averageInterval">
+                <option value="10">10 seconds</option>
+                <option value="30">30 seconds</option>
+                <option value="60">1 minute</option>
+                <option value="300">5 minutes</option>
+            </select>
+        </div>
         <canvas id="loudnessChart"></canvas>
         <div class="loudness-values">
             <div class="loudness-box">
