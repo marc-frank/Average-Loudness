@@ -81,15 +81,19 @@ function initChart() {
         data: {
             labels: [],
             datasets: [{
-                label: 'Average',
-                data: [],
-                borderColor: 'green',
-                fill: true
-            }, {
                 label: 'Current',
                 data: [],
                 borderColor: 'blue',
-                fill: true
+                fill: false,
+                tension: 0.25,
+                radius: 0
+            }, {
+                label: 'Average',
+                data: [],
+                borderColor: 'green',
+                fill: false,
+                tension: 0.25,
+                radius: 0
             }]
         },
         options: {
