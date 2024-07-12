@@ -24,7 +24,7 @@ h1 {
 
 #loudnessChart {
     width: 100%;
-    max-width: 1600px;
+    /*max-width: 1600px;*/
     height: 400px;
     /*min-height: 400px;*/
 }
