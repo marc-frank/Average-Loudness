@@ -1,37 +1,51 @@
-body {
+body, html {
     font-family: Arial, sans-serif;
+    height: 100%;
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
     background-color: #ffffff;
 }
+
 .container {
     width: 300px;
+    height: 400px;
     text-align: center;
     border: 2px solid black;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
 }
-canvas {
+
+#loudness-graph {
     width: 100%;
-    height: 200px;
+    flex-grow: 1;
     border: 1px solid black;
     margin-bottom: 10px;
 }
+
 .loudness-display {
     display: flex;
     justify-content: space-between;
+    height: 80px;
 }
+
 .loudness-display div {
     width: 48%;
     border: 1px solid black;
     padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
+
 h2 {
     margin: 0;
     font-size: 24px;
 }
+
 p {
     margin: 0;
     font-size: 14px;
