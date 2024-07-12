@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 20;
     padding: 20;
-    /*display: flex;*/
+    display: flex;
     justify-content: center;
     align-items: center;
     height: 80vh;
