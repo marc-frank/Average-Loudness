@@ -54,7 +54,6 @@ function updateLoudness() {
     requestAnimationFrame(updateLoudness);
 }
 
-// Function to update the graph
 function updateGraph() {
     const data = {
         labels: new Array(loudnessHistory.length).fill(''),
@@ -65,7 +64,7 @@ function updateGraph() {
                 borderColor: 'blue',
                 borderWidth: 2,
                 fill: false,
-                lineTension: 0
+                tension: 0
             },
             {
                 label: 'Average Loudness',
@@ -73,7 +72,7 @@ function updateGraph() {
                 borderColor: 'green',
                 borderWidth: 2,
                 fill: false,
-                lineTension: 0
+                tension: 0
             }
         ]
     };
@@ -88,6 +87,7 @@ function updateGraph() {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                animation: false,
                 scales: {
                     x: { display: false },
                     y: {
