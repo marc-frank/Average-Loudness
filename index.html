@@ -3,30 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loudness Meter PWA</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
-    <title>Average Loudness</title>
 </head>
 <body>
     <div class="container">
-        <canvas id="loudness-graph" height="200"></canvas>
-        <div class="loudness-display">
-            <div id="current-loudness-container">
-                <h2 id="current-loudness">30.0</h2>
-                <p>Current</p>
+        <h1>Average Loudness</h1>
+        <canvas id="loudnessChart"></canvas>
+        <div class="loudness-values">
+            <div class="loudness-box">
+                <span id="current-loudness">0.0</span>
+                <span>Current</span>
             </div>
-            <div id="average-loudness-container">
-                <h2 id="average-loudness">25.0</h2>
-                <p>Average</p>
+            <div class="loudness-box">
+                <span id="average-loudness">0.0</span>
+                <span>Average</span>
             </div>
         </div>
-        <select id="interval" style="display: none;">
-            <option value="10">10 seconds</option>
-            <option value="30">30 seconds</option>
-            <option value="60">1 minute</option>
-        </select>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
