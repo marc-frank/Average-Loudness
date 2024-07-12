@@ -24,7 +24,7 @@ h1 {
 #loudnessChart {
     width: 100%;
     max-width: 400px;
-    height: 200px;
+    height: 400px;
 }
 
 .loudness-values {
@@ -36,6 +36,10 @@ h1 {
 .loudness-box {
     text-align: center;
     flex: 1;
+    background-color: gray;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .loudness-box span:first-child {
